@@ -14,7 +14,7 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
   if (showIPv4) {
     const ipv4 = data.prefixes.filter(item => {
       return (!service || item.service === service) &&
-             (!region || item.region === region || region === '');
+             (!region || item.region === region);
     }).map(item => ({
       service: item.service,
       region: item.region,
@@ -27,7 +27,7 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
   if (showIPv6 && Array.isArray(data.ipv6_prefixes)) {
     const ipv6 = data.ipv6_prefixes.filter(item => {
       return (!service || item.service === service) &&
-             (!region || item.region === region || region === '');
+             (!region || item.region === region);
     }).map(item => ({
       service: item.service,
       region: item.region,
