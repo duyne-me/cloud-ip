@@ -65,10 +65,28 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
 async function populateDropdownsAndLastChange() {
   const res = await fetch(url);
   const data = await res.json();
-  // Show last change date
-  if (data.createDate) {
-    const lastChangeDiv = document.getElementById('lastChange');
-    lastChangeDiv.textContent = `Last change: ${data.createDate}`;
+    // Show last change date in UTC and relative format
+    if (data.createDate) {
+      const lastChangeDiv = document.getElementById('lastChange');
+      // Parse AWS createDate: 'YYYY-MM-DD-HH-MM-SS'
+      const parts = data.createDate.split('-');
+      const date = new Date(Date.UTC(
+        parseInt(parts[0]),
+        parseInt(parts[1]) - 1,
+        parseInt(parts[2]),
+        parseInt(parts[3]),
+        parseInt(parts[4]),
+        parseInt(parts[5])
+      ));
+      const now = new Date();
+      const diffMs = now.getTime() - date.getTime();
+      const diffSec = Math.floor(diffMs / 1000);
+      let rel = '';
+      if (diffSec < 60) rel = `${diffSec} seconds ago`;
+      else if (diffSec < 3600) rel = `${Math.floor(diffSec/60)} minutes ago`;
+      else if (diffSec < 86400) rel = `${Math.floor(diffSec/3600)} hours ago`;
+      else rel = `${Math.floor(diffSec/86400)} days ago`;
+      lastChangeDiv.innerHTML = `<b>Last Change</b><br>${data.createDate} UTC (${rel})`;
   }
   const servicesSet = new Set();
   const regionsSet = new Set();
