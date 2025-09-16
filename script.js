@@ -103,4 +103,10 @@ async function populateDropdownsAndLastChange() {
   });
 }
 
-populateDropdownsAndLastChange();
+
+// Populate dropdowns and last change, then trigger initial table update
+async function init() {
+  await populateDropdownsAndLastChange();
+  document.getElementById('filterBtn').click();
+}
+init();
