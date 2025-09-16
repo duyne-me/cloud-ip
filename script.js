@@ -1,3 +1,4 @@
+document.getElementById('filterBtn').addEventListener('click', async () => {
 const url = 'https://ip-ranges.amazonaws.com/ip-ranges.json';
 
 document.getElementById('filterBtn').addEventListener('click', async () => {
@@ -7,15 +8,38 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
   const showService = document.getElementById('showService').checked;
   const showRegion = document.getElementById('showRegion').checked;
   const showPrefix = document.getElementById('showPrefix').checked;
+  const showIPv4 = document.getElementById('showIPv4').checked;
+  const showIPv6 = document.getElementById('showIPv6').checked;
 
   const res = await fetch(url);
   const data = await res.json();
-  const ranges = data.prefixes;
+  let filtered = [];
 
-  const filtered = ranges.filter(item => {
-    return (!service || item.service === service) &&
-           (!region || item.region === region);
-  });
+  if (showIPv4) {
+    const ipv4 = data.prefixes.filter(item => {
+      return (!service || item.service === service) &&
+             (!region || item.region === region);
+    }).map(item => ({
+      service: item.service,
+      region: item.region,
+      prefix: item.ip_prefix,
+      version: 'IPv4'
+    }));
+    filtered = filtered.concat(ipv4);
+  }
+
+  if (showIPv6) {
+    const ipv6 = data.ipv6_prefixes.filter(item => {
+      return (!service || item.service === service) &&
+             (!region || item.region === region);
+    }).map(item => ({
+      service: item.service,
+      region: item.region,
+      prefix: item.ipv6_prefix,
+      version: 'IPv6'
+    }));
+    filtered = filtered.concat(ipv6);
+  }
 
   const tableBody = document.getElementById('ipTableBody');
   tableBody.innerHTML = '';
@@ -39,11 +63,12 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
 
     if (showPrefix) {
       const tdPrefix = document.createElement('td');
-      tdPrefix.textContent = item.ip_prefix;
+      tdPrefix.textContent = item.prefix;
       tdPrefix.classList.add('col-prefix');
       row.appendChild(tdPrefix);
     }
 
+    row.setAttribute('data-version', item.version);
     tableBody.appendChild(row);
   });
 });
