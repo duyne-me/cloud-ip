@@ -1,4 +1,3 @@
-document.getElementById('filterBtn').addEventListener('click', async () => {
 const url = 'https://ip-ranges.amazonaws.com/ip-ranges.json';
 
 document.getElementById('filterBtn').addEventListener('click', async () => {
