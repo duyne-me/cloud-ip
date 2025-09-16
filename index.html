@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AWS IP Ranges Viewer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>AWS IP Range Info</h2>
+    <div class="filter-section">
+      <div class="input-group">
+        <label>Services</label>
+        <input type="text" id="serviceInput" placeholder="EC2" />
+      </div>
+      <div class="input-group">
+        <label>Region</label>
+        <input type="text" id="regionInput" placeholder="ap-southeast-2" />
+      </div>
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="showService" checked /> Show Service</label>
+        <label><input type="checkbox" id="showRegion" checked /> Show Region</label>
+        <label><input type="checkbox" id="showPrefix" checked /> Show IP Prefix</label>
+      </div>
+      <button id="filterBtn">Update Filter</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="col-service">Service</th>
+          <th class="col-region">Region</th>
+          <th class="col-prefix">IP Prefix</th>
+        </tr>
+      </thead>
+      <tbody id="ipTableBody"></tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
