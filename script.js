@@ -1,7 +1,7 @@
 const url = 'https://ip-ranges.amazonaws.com/ip-ranges.json';
 
 document.getElementById('filterBtn').addEventListener('click', async () => {
-  const service = document.getElementById('serviceInput').value.toUpperCase();
+  const service = document.getElementById('serviceInput').value;
   const region = document.getElementById('regionInput').value;
 
   const showService = document.getElementById('showService').checked;
@@ -16,7 +16,7 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
 
   if (showIPv4) {
     const ipv4 = data.prefixes.filter(item => {
-      return (!service || item.service.toUpperCase() === service) &&
+      return (!service || item.service === service) &&
              (!region || item.region === region || region === '');
     }).map(item => ({
       service: item.service,
@@ -29,7 +29,7 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
 
   if (showIPv6 && Array.isArray(data.ipv6_prefixes)) {
     const ipv6 = data.ipv6_prefixes.filter(item => {
-      return (!service || item.service.toUpperCase() === service) &&
+      return (!service || item.service === service) &&
              (!region || item.region === region || region === '');
     }).map(item => ({
       service: item.service,
@@ -71,3 +71,42 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
     tableBody.appendChild(row);
   });
 });
+
+// Populate dropdowns for services and regions
+async function populateDropdowns() {
+  const res = await fetch(url);
+  const data = await res.json();
+  const servicesSet = new Set();
+  const regionsSet = new Set();
+  if (Array.isArray(data.prefixes)) {
+    data.prefixes.forEach(item => {
+      if (item.service) servicesSet.add(item.service);
+      if (item.region) regionsSet.add(item.region);
+    });
+  }
+  if (Array.isArray(data.ipv6_prefixes)) {
+    data.ipv6_prefixes.forEach(item => {
+      if (item.service) servicesSet.add(item.service);
+      if (item.region) regionsSet.add(item.region);
+    });
+  }
+  const serviceInput = document.getElementById('serviceInput');
+  const regionInput = document.getElementById('regionInput');
+  // Remove all except first option
+  serviceInput.length = 1;
+  regionInput.length = 1;
+  Array.from(servicesSet).sort().forEach(service => {
+    const opt = document.createElement('option');
+    opt.value = service;
+    opt.textContent = service;
+    serviceInput.appendChild(opt);
+  });
+  Array.from(regionsSet).sort().forEach(region => {
+    const opt = document.createElement('option');
+    opt.value = region;
+    opt.textContent = region;
+    regionInput.appendChild(opt);
+  });
+}
+
+populateDropdowns();
