@@ -1,3 +1,14 @@
+// Hide/show Service/Region filters based on provider
+function updateFilterVisibility() {
+  const provider = document.getElementById('providerInput').value;
+  document.getElementById('serviceInput').parentElement.style.display = provider === 'aws' ? '' : 'none';
+  document.getElementById('regionInput').parentElement.style.display = provider === 'aws' ? '' : 'none';
+}
+
+document.getElementById('providerInput').addEventListener('change', () => {
+  updateFilterVisibility();
+  document.getElementById('filterBtn').click();
+});
 
 const awsUrl = 'https://ip-ranges.amazonaws.com/ip-ranges.json';
 const cfV4Url = 'https://www.cloudflare.com/ips-v4';
@@ -5,13 +16,27 @@ const cfV6Url = 'https://www.cloudflare.com/ips-v6';
 
 
 document.getElementById('filterBtn').addEventListener('click', async () => {
+  updateFilterVisibility();
   const provider = document.getElementById('providerInput').value;
   const tableBody = document.getElementById('ipTableBody');
   tableBody.innerHTML = '';
 
-  // Hide/show AWS-specific filters
+  // Table headers
+  const thService = document.querySelector('th.col-service');
+  const thRegion = document.querySelector('th.col-region');
+  const thPrefix = document.querySelector('th.col-prefix');
+  // Cloudflare note
+  const cfNote = document.getElementById('cfNote');
+
+
+  // Hide/show AWS-specific filters and columns
   document.getElementById('serviceInput').parentElement.style.display = provider === 'aws' ? '' : 'none';
   document.getElementById('regionInput').parentElement.style.display = provider === 'aws' ? '' : 'none';
+  thService.style.display = provider === 'aws' ? '' : 'none';
+  thRegion.style.display = provider === 'aws' ? '' : 'none';
+  thPrefix.style.display = '';
+  cfNote.style.display = provider === 'cloudflare' ? '' : 'none';
+  cfNote.textContent = provider === 'cloudflare' ? 'Cloudflare does not provide Service or Region information.' : '';
 
   if (provider === 'aws') {
     const service = document.getElementById('serviceInput').value;
@@ -47,14 +72,19 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
     }
     filtered.forEach(item => {
       const row = document.createElement('tr');
-      const tdService = document.createElement('td');
-      tdService.textContent = item.service;
-      tdService.classList.add('col-service');
-      row.appendChild(tdService);
-      const tdRegion = document.createElement('td');
-      tdRegion.textContent = item.region;
-      tdRegion.classList.add('col-region');
-      row.appendChild(tdRegion);
+      // Only add Service/Region if visible
+      if (thService.style.display !== 'none') {
+        const tdService = document.createElement('td');
+        tdService.textContent = item.service;
+        tdService.classList.add('col-service');
+        row.appendChild(tdService);
+      }
+      if (thRegion.style.display !== 'none') {
+        const tdRegion = document.createElement('td');
+        tdRegion.textContent = item.region;
+        tdRegion.classList.add('col-region');
+        row.appendChild(tdRegion);
+      }
       const tdPrefix = document.createElement('td');
       tdPrefix.textContent = item.prefix;
       tdPrefix.classList.add('col-prefix');
@@ -81,15 +111,6 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
     }
     cfIps.forEach(prefix => {
       const row = document.createElement('tr');
-      // Empty cells for Service and Region
-      const tdService = document.createElement('td');
-      tdService.textContent = 'Cloudflare';
-      tdService.classList.add('col-service');
-      row.appendChild(tdService);
-      const tdRegion = document.createElement('td');
-      tdRegion.textContent = '';
-      tdRegion.classList.add('col-region');
-      row.appendChild(tdRegion);
       const tdPrefix = document.createElement('td');
       tdPrefix.textContent = prefix;
       tdPrefix.classList.add('col-prefix');
