@@ -1,3 +1,69 @@
+/* Last Change styling */
+.last-change {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 12px 18px 10px 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  color: #222;
+  font-size: 1.08em;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.last-change b {
+  font-size: 1.1em;
+  color: #1a237e;
+  letter-spacing: 0.02em;
+}
+.last-change br {
+  line-height: 2.2;
+}
+
+/* Enhanced filter section styling */
+.enhanced-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 18px 32px;
+  margin-bottom: 18px;
+  background: #f4f7fb;
+  border-radius: 8px;
+  padding: 16px 18px 10px 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+.enhanced-filter .input-group,
+.enhanced-filter .checkbox-group {
+  margin-bottom: 0;
+}
+.enhanced-filter label {
+  font-weight: 500;
+  color: #1a237e;
+  margin-right: 6px;
+}
+.enhanced-filter select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #b0bec5;
+  background: #fff;
+  font-size: 1em;
+}
+.enhanced-filter input[type="checkbox"] {
+  accent-color: #1976d2;
+  margin-right: 2px;
+}
+.enhanced-filter button {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 7px 18px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.enhanced-filter button:hover {
+  background: #1251a3;
+}
 body {
   font-family: Arial, sans-serif;
   background: #f4f6f9;
