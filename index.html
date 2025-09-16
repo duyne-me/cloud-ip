@@ -12,11 +12,15 @@
     <div class="filter-section">
       <div class="input-group">
         <label>Services</label>
-        <input type="text" id="serviceInput" placeholder="EC2" />
+        <select id="serviceInput">
+          <option value="">All</option>
+        </select>
       </div>
       <div class="input-group">
         <label>Region</label>
-        <input type="text" id="regionInput" placeholder="ap-southeast-2" />
+        <select id="regionInput">
+          <option value="">All</option>
+        </select>
       </div>
       <div class="checkbox-group">
         <label><input type="checkbox" id="showService" checked /> Show Service</label>
