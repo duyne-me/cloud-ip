@@ -9,6 +9,7 @@
 <body>
   <div class="container">
     <h2>AWS IP Range Info</h2>
+    <div id="lastChange" style="margin-bottom: 10px; color: #555; font-size: 1em;"></div>
     <div class="filter-section">
       <div class="input-group">
         <label>Services</label>
@@ -23,13 +24,11 @@
         </select>
       </div>
       <div class="checkbox-group">
-        <label><input type="checkbox" id="showService" checked /> Show Service</label>
-        <label><input type="checkbox" id="showRegion" checked /> Show Region</label>
-        <label><input type="checkbox" id="showPrefix" checked /> Show IP Prefix</label>
+  <!-- Show checkboxes removed: always show all columns -->
       </div>
       <div class="checkbox-group">
-        <label><input type="checkbox" id="showIPv4" checked /> IPv4</label>
-        <label><input type="checkbox" id="showIPv6" checked /> IPv6</label>
+  <label><input type="checkbox" id="showIPv4" checked /> IPv4</label>
+  <label><input type="checkbox" id="showIPv6" checked /> IPv6</label>
       </div>
       <button id="filterBtn">Update Filter</button>
     </div>

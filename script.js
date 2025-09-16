@@ -4,9 +4,6 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
   const service = document.getElementById('serviceInput').value;
   const region = document.getElementById('regionInput').value;
 
-  const showService = document.getElementById('showService').checked;
-  const showRegion = document.getElementById('showRegion').checked;
-  const showPrefix = document.getElementById('showPrefix').checked;
   const showIPv4 = document.getElementById('showIPv4').checked;
   const showIPv6 = document.getElementById('showIPv6').checked;
 
@@ -43,39 +40,36 @@ document.getElementById('filterBtn').addEventListener('click', async () => {
   const tableBody = document.getElementById('ipTableBody');
   tableBody.innerHTML = '';
 
+
   filtered.forEach(item => {
     const row = document.createElement('tr');
-
-    if (showService) {
-      const tdService = document.createElement('td');
-      tdService.textContent = item.service;
-      tdService.classList.add('col-service');
-      row.appendChild(tdService);
-    }
-
-    if (showRegion) {
-      const tdRegion = document.createElement('td');
-      tdRegion.textContent = item.region;
-      tdRegion.classList.add('col-region');
-      row.appendChild(tdRegion);
-    }
-
-    if (showPrefix) {
-      const tdPrefix = document.createElement('td');
-      tdPrefix.textContent = item.prefix;
-      tdPrefix.classList.add('col-prefix');
-      row.appendChild(tdPrefix);
-    }
-
+    const tdService = document.createElement('td');
+    tdService.textContent = item.service;
+    tdService.classList.add('col-service');
+    row.appendChild(tdService);
+    const tdRegion = document.createElement('td');
+    tdRegion.textContent = item.region;
+    tdRegion.classList.add('col-region');
+    row.appendChild(tdRegion);
+    const tdPrefix = document.createElement('td');
+    tdPrefix.textContent = item.prefix;
+    tdPrefix.classList.add('col-prefix');
+    row.appendChild(tdPrefix);
     row.setAttribute('data-version', item.version);
     tableBody.appendChild(row);
   });
 });
 
-// Populate dropdowns for services and regions
-async function populateDropdowns() {
+
+// Populate dropdowns for services and regions and show last change date
+async function populateDropdownsAndLastChange() {
   const res = await fetch(url);
   const data = await res.json();
+  // Show last change date
+  if (data.createDate) {
+    const lastChangeDiv = document.getElementById('lastChange');
+    lastChangeDiv.textContent = `Last change: ${data.createDate}`;
+  }
   const servicesSet = new Set();
   const regionsSet = new Set();
   if (Array.isArray(data.prefixes)) {
@@ -109,4 +103,4 @@ async function populateDropdowns() {
   });
 }
 
-populateDropdowns();
+populateDropdownsAndLastChange();
